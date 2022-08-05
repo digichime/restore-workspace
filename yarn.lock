@@ -746,6 +746,8 @@ __metadata:
     js-yaml: ^4.1.0
     prettier: ^2.7.1
     typescript: ^4.7.4
+  bin:
+    restore-yarn-workspace: ./dist/index.js
   languageName: unknown
   linkType: soft
 

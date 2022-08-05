@@ -2,15 +2,13 @@
   "name": "restore-yarn-workspace",
   "version": "1.0.0",
   "main": "index.ts",
-  "bin": {
-    "restore-yarn-workspace": "./dist/index.js"
-  },
+  "bin": "./dist/index.js",
   "repository": "ssh://git@github.com/shinnoki/restore-yarn-workspace",
   "author": "Yudai Shinnoki <y.shinnoki@gmail.com>",
   "license": "MIT",
   "packageManager": "yarn@3.2.2",
   "scripts": {
-    "build": "ncc build index.ts"
+    "build": "ncc build index.ts -m && node ./prepend-hashbang.js"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
