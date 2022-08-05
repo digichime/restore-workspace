@@ -29,14 +29,13 @@ const parseLine = (line: string) => {
         field = null;
       }
       const [name, value] = parseLine(line);
-      if (name === "resolution") {
-        if (value.includes("@workspace:")) {
-          const [packageName, packageDir] = value.split("@workspace:");
-          if (packageDir !== ".") {
-            packageJson = { dir: packageDir, value: { name: packageName } };
-          }
+      if (name === "resolution" && value.includes("@workspace:")) {
+        const [packageName, packageDir] = value.split("@workspace:");
+        if (packageDir !== ".") {
+          packageJson = { dir: packageDir, value: { name: packageName } };
         }
-      } else if (name === "dependencies" || name === "peerDependencies") {
+      }
+      if (packageJson && (name === "dependencies" || name === "peerDependencies")) {
         field = { name, value: {} };
       }
     } else {
@@ -54,6 +53,7 @@ const parseLine = (line: string) => {
         }
 
         packageJson = null;
+        field = null;
       }
     }
   }
