@@ -1,9 +1,23 @@
 {
   "name": "restore-yarn-workspace",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
+  "bin": {
+    "restore-yarn-workspace": "./dist/index.js"
+  },
   "repository": "ssh://git@github.com/shinnoki/restore-yarn-workspace",
   "author": "Yudai Shinnoki <y.shinnoki@gmail.com>",
   "license": "MIT",
-  "packageManager": "yarn@3.2.2"
+  "packageManager": "yarn@3.2.2",
+  "scripts": {
+    "build": "ncc build index.ts"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^18.6.4",
+    "@vercel/ncc": "^0.34.0",
+    "js-yaml": "^4.1.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  }
 }
