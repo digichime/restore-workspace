@@ -1,0 +1,8 @@
+{
+  "name": "restore-yarn-workspace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/shinnoki/restore-yarn-workspace",
+  "author": "Yudai Shinnoki <y.shinnoki@gmail.com>",
+  "license": "MIT"
+}
