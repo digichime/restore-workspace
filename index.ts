@@ -36,12 +36,7 @@ const parseLine = (line: string) => {
             packageJson = { dir: packageDir, value: { name: packageName } };
           }
         }
-      } else if (
-        name === "dependencies" ||
-        name === "peerDependencies" ||
-        name === "peerDependenciesMeta" ||
-        name === "bin"
-      ) {
+      } else if (name === "dependencies" || name === "peerDependencies") {
         field = { name, value: {} };
       }
     } else {
