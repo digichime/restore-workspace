@@ -1,10 +1,20 @@
 {
-  "name": "restore-yarn-workspace",
-  "version": "1.0.0",
-  "main": "index.ts",
+  "name": "restore-workspace",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
   "bin": "./dist/index.js",
-  "repository": "ssh://git@github.com/shinnoki/restore-yarn-workspace",
-  "author": "Yudai Shinnoki <y.shinnoki@gmail.com>",
+  "files": [
+    "./dist/index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shinnoki/restore-yarn-workspace.git"
+  },
+  "author": {
+    "name": "Yudai Shinnoki",
+    "email": "y.shinnoki@gmail.com",
+    "url": "https://github.com/shinnoki"
+  },
   "license": "MIT",
   "packageManager": "yarn@3.2.2",
   "scripts": {
