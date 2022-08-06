@@ -8,7 +8,7 @@
   "license": "MIT",
   "packageManager": "yarn@3.2.2",
   "scripts": {
-    "build": "ncc build index.ts -m && node ./prepend-hashbang.js"
+    "build": "ncc build src/index.ts -m && node ./scripts/prepend-hashbang.js"
   },
   "devDependencies": {
     "@types/node": "^18.6.4",
