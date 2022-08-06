@@ -1,60 +1,60 @@
 import * as fs from "fs";
 import * as readline from "readline";
 
-const parseLine = (line: string) => {
-  const [key, ...rest] = line.replaceAll('"', "").split(":");
-  return [key.trim(), rest.join(":").trim()];
-};
-
 (async () => {
   const stream = fs.createReadStream("./yarn.lock", "utf-8");
-  const rl = readline.createInterface({
-    input: stream,
-  });
+  const rl = readline.createInterface({ input: stream });
 
   let packageJson: { dir: string; value: any } | null = null;
-  let field: { name: string; value: any } | null = null;
+  let fieldName: string | null = null;
 
   for await (const line of rl) {
-    if (line.startsWith("    ")) {
-      // 4 spaces indent
-      if (field) {
-        const [name, value] = parseLine(line);
-        field.value[name] = value;
-      }
-    } else if (line.startsWith("  ")) {
-      // 2 spaces indent
-      if (packageJson && field) {
-        packageJson.value[field.name] = field.value;
-        field = null;
-      }
-      const [name, value] = parseLine(line);
-      if (name === "resolution" && value.includes("@workspace:")) {
-        const [packageName, packageDir] = value.split("@workspace:");
+    // Read the resolutin field until @workspace: package found
+    if (!packageJson) {
+      if (line.startsWith("  resolution: ") && line.includes("@workspace:")) {
+        const [packageName, packageDir] = line.slice(14).replaceAll('"', "").split("@workspace:");
         if (packageDir !== ".") {
           packageJson = { dir: packageDir, value: { name: packageName } };
         }
       }
-      if (packageJson && (name === "dependencies" || name === "peerDependencies")) {
-        field = { name, value: {} };
-      }
-    } else {
-      // No indent
-      if (packageJson) {
-        // Make sure the package directory  exists
-        if (!fs.existsSync(packageJson.dir)) {
-          fs.mkdirSync(packageJson.dir, { recursive: true });
-        }
+      continue;
+    }
 
-        // Create the package.json if not exists
-        const packageJsonPath = packageJson.dir + "/package.json";
-        if (!fs.existsSync(packageJsonPath)) {
-          fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson.value));
-        }
-
-        packageJson = null;
-        field = null;
+    if (fieldName) {
+      // Add value to field if the line starts with 4 spaces indents
+      // TODO: support peerDependenciesMeta field
+      if (line.startsWith("    ")) {
+        const [name, value] = line.trim().replaceAll('"', "").split(": ");
+        packageJson.value[fieldName][name] = value;
+        continue;
       }
+
+      // Clear the fieldName if the line doesn't start with 4 space indents
+      fieldName = null;
+    }
+
+    // Add new field to packageJson
+    // TODO: support peerDependenciesMeta and bin
+    if (line === "  dependencies:" || line === "  peerDependencies:") {
+      fieldName = line.slice(2, -1);
+      packageJson.value[fieldName] = {};
+      continue;
+    }
+
+    if (line === "") {
+      // Make sure the package directory  exists
+      if (!fs.existsSync(packageJson.dir)) {
+        fs.mkdirSync(packageJson.dir, { recursive: true });
+      }
+
+      // Create the package.json if not exists
+      const packageJsonPath = packageJson.dir + "/package.json";
+      if (!fs.existsSync(packageJsonPath)) {
+        fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson.value));
+      }
+
+      packageJson = null;
+      fieldName = null;
     }
   }
 })();
