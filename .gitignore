@@ -1,5 +1,10 @@
+# macOS
 .DS_Store
+
+# node
 node_modules
+
+# yarn
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -7,4 +12,6 @@ node_modules
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-# dist
+
+# Buid artifacts
+dist
